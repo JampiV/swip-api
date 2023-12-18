@@ -1,5 +1,6 @@
 package com.api.swip.entity;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -19,15 +20,11 @@ public class Unidad
 
     private String ubicacionGeografica;
 
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     private String nombreUnidad;
-
-    /*
-    @OneToMany(mappedBy = "unidad", cascade = {CascadeType.ALL})
-    @JoinColumn(name = "id_user", unique = true, foreignKey = @ForeignKey(name = "FK_USER_UNIDAD"))
-    private User user;*/
 
     @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "id_inventario", unique = true, foreignKey = @ForeignKey(name = "FK_UNIDAD_INVENTARIO"))
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private Inventario inventario;
 }

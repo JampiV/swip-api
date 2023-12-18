@@ -1,6 +1,8 @@
 package com.api.swip.service;
 
 import com.api.swip.entity.UnidadOrganica;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 
@@ -12,7 +14,7 @@ public interface IUnidadOrganicaService
 
     UnidadOrganica readById(Integer id) throws Exception;
 
-    List<UnidadOrganica> readAll() throws Exception;
+    Page<UnidadOrganica> readAll(Pageable pageable) throws Exception;
 
     void delete(Integer id) throws Exception;
 

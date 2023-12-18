@@ -10,6 +10,8 @@ import com.api.swip.service.IInventarioService;
 import com.api.swip.service.IUnidadOrganicaService;
 import com.api.swip.validators.UnidadOrganicaValidator;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -43,8 +45,8 @@ public class UnidadOrganicaServiceImpl implements IUnidadOrganicaService
     }
 
     @Override
-    public List<UnidadOrganica> readAll() throws Exception {
-        return repo.findAll();
+    public Page<UnidadOrganica> readAll(Pageable pageable) throws Exception {
+        return repo.findAll(pageable);
     }
 
     @Override
@@ -57,7 +59,8 @@ public class UnidadOrganicaServiceImpl implements IUnidadOrganicaService
     @Override
     public void deleteByIdWithoutBienes(Integer id) throws Exception {
         Inventario inv = inventarioService.readById(id);
-        List<Bien> bienes = bienService.findByInventarioId(inv.getId());
+        Page<Bien> pageBienes = bienService.findByInventarioId(id, Pageable.unpaged());
+        List<Bien> bienes = pageBienes.getContent();
         if (!bienes.isEmpty()) {
             bienes.forEach(bien -> {
                 bien.setInventario(null);
@@ -71,4 +74,5 @@ public class UnidadOrganicaServiceImpl implements IUnidadOrganicaService
 
         repo.deleteById(id);
     }
+
 }

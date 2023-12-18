@@ -1,11 +1,14 @@
 package com.api.swip.infrastructure.controller;
 
+import com.api.swip.dto.BienCentralDto;
 import com.api.swip.dto.BienDto;
 import com.api.swip.entity.Bien;
 import com.api.swip.service.IBienService;
 import com.api.swip.service.IUserLocalService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
@@ -45,41 +48,50 @@ public class BienesRest
     }
 
     @GetMapping("/unidad")
-    public ResponseEntity<List<BienDto>> findAllByUnidad() throws Exception{
+    public ResponseEntity<Page<BienDto>> findAllByUnidad(Pageable pageable) throws Exception {
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
-        List<BienDto> bienDtoList = new ArrayList<>();
-        List<Bien> bienes = service.findByInventarioId(userLocalService.obtenerInventarioId(username));
-        for (int i = 0; i < bienes.size();i++){
+        Integer inventarioId = userLocalService.obtenerInventarioId(username);
+
+        // Obtener la página de Bienes usando el método del repositorio
+        Page<Bien> pageBienes = service.findByInventarioId(inventarioId, pageable);
+
+        // Convertir cada Bien a BienDto
+        Page<BienDto> bienDtoPage = pageBienes.map(bien -> {
             BienDto bienDto = new BienDto();
-            Bien bien = bienes.get(i);
             bienDto.setId(bien.getId());
             bienDto.setEstado(bien.getEstado());
             bienDto.setMarca(bien.getMarca());
             bienDto.setModelo(bien.getModelo());
             bienDto.setSerie(bien.getSerie());
             bienDto.setNombreDescriptivo(bien.getNombreDescriptivo());
-            bienDtoList.add(bienDto);
-        }
-        return new ResponseEntity<>(bienDtoList, HttpStatus.OK);
+            return bienDto;
+        });
+
+        return new ResponseEntity<>(bienDtoPage, HttpStatus.OK);
     }
 
-    @GetMapping
-    public ResponseEntity<List<BienDto>> findAll() throws Exception{
-        List<BienDto> bienDtoList = new ArrayList<>();
-        List<Bien> bienes = service.readAll();
-        for (int i = 0; i < bienes.size();i++){
+    @GetMapping()
+    public ResponseEntity<Page<BienCentralDto>> findAllWithUnidad(Pageable pageable) throws Exception {
+        Page<BienCentralDto> bienesConUnidad = service.findAllBienesWithUnidad(pageable);
+        return new ResponseEntity<>(bienesConUnidad, HttpStatus.OK);
+    }
+
+
+    /*@GetMapping
+    public ResponseEntity<Page<BienDto>> findAll(Pageable pageable) throws Exception{
+        Page<Bien> bienes = service.readAll(pageable);
+        Page<BienDto> bienDtoList = bienes.map(bien -> {
             BienDto bienDto = new BienDto();
-            Bien bien = bienes.get(i);
             bienDto.setId(bien.getId());
             bienDto.setEstado(bien.getEstado());
             bienDto.setMarca(bien.getMarca());
             bienDto.setModelo(bien.getModelo());
             bienDto.setSerie(bien.getSerie());
             bienDto.setNombreDescriptivo(bien.getNombreDescriptivo());
-            bienDtoList.add(bienDto);
-        }
+            return bienDto;
+        });
         return new ResponseEntity<>(bienDtoList, HttpStatus.OK);
-    }
+    }*/
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Bien> deleteById(@PathVariable("id") Integer id) throws Exception

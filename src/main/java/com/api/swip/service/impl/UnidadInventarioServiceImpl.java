@@ -10,6 +10,8 @@ import com.api.swip.service.IInventarioService;
 import com.api.swip.service.IUnidadInventarioService;
 import com.api.swip.validators.UnidadInventarioValidator;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -56,8 +58,9 @@ public class UnidadInventarioServiceImpl implements IUnidadInventarioService
     @Override
     public void deleteByIdWithoutBienes(Integer id) throws Exception {
         Inventario inv = inventarioService.readById(id);
-        List<Bien> bienes = bienService.findByInventarioId(id);
-        if (bienes.size() == 0) {
+        Page<Bien> pageBienes = bienService.findByInventarioId(id, Pageable.unpaged());
+        List<Bien> bienes = pageBienes.getContent();
+        if (!bienes.isEmpty()) {
             bienes.forEach(bien -> {
                 bien.setInventario(null);
                 try {
@@ -70,4 +73,5 @@ public class UnidadInventarioServiceImpl implements IUnidadInventarioService
 
         repo.deleteById(id);
     }
+
 }

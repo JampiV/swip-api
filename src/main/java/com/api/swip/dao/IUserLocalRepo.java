@@ -6,5 +6,4 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface IUserLocalRepo extends JpaRepository<UserLocal, Integer>
 {
-   // UserLocal findByCodigo(String codigo);
 }

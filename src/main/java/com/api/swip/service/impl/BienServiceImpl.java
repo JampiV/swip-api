@@ -3,6 +3,7 @@ package com.api.swip.service.impl;
 
 import com.api.swip.dao.IBienRepo;
 import com.api.swip.dao.IUserLocalRepo;
+import com.api.swip.dto.BienCentralDto;
 import com.api.swip.entity.Bien;
 import com.api.swip.entity.UnidadOrganica;
 import com.api.swip.entity.UserLocal;
@@ -10,6 +11,8 @@ import com.api.swip.exception.ModelNotFoundException;
 import com.api.swip.service.IBienService;
 import com.api.swip.validators.BienValidator;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -43,8 +46,8 @@ public class BienServiceImpl implements IBienService
     }
 
     @Override
-    public List<Bien> readAll() throws Exception {
-        return repo.findAll();
+    public Page<Bien> readAll(Pageable pageable) throws Exception {
+        return repo.findAll(pageable);
     }
 
     @Transactional
@@ -55,8 +58,13 @@ public class BienServiceImpl implements IBienService
     }
 
     @Override
-    public List<Bien> findByInventarioId(Integer id) {
-        return repo.findByInventarioId(id);
+    public Page<Bien> findByInventarioId(Integer id, Pageable pageable) {
+        return repo.findByInventarioId(id, pageable);
     }
-    
+
+    @Override
+    public Page<BienCentralDto> findAllBienesWithUnidad(Pageable pageable) {
+        return repo.findAllBienesWithUnidad(pageable);
+    }
+
 }

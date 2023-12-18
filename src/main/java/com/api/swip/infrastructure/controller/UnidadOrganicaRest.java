@@ -4,6 +4,8 @@ import com.api.swip.entity.UnidadOrganica;
 import com.api.swip.service.IUnidadOrganicaService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -39,8 +41,8 @@ public class UnidadOrganicaRest
     }
 
     @GetMapping()
-    public ResponseEntity<List<UnidadOrganica>> findAll() throws Exception {
-        List<UnidadOrganica> obj = service.readAll();
+    public ResponseEntity<Page<UnidadOrganica>> findAll(Pageable pageable) throws Exception {
+        Page<UnidadOrganica> obj = service.readAll(pageable);
 
         return new ResponseEntity<>(obj, HttpStatus.OK);
     }
