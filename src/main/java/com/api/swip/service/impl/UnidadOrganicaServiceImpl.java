@@ -1,6 +1,7 @@
 package com.api.swip.service.impl;
 
 import com.api.swip.dao.IUnidadOrganicaRepo;
+import com.api.swip.dto.especification.UnidadOrganicaEspecification;
 import com.api.swip.entity.Bien;
 import com.api.swip.entity.Inventario;
 import com.api.swip.entity.UnidadOrganica;
@@ -10,8 +11,11 @@ import com.api.swip.service.IInventarioService;
 import com.api.swip.service.IUnidadOrganicaService;
 import com.api.swip.validators.UnidadOrganicaValidator;
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -24,6 +28,12 @@ public class UnidadOrganicaServiceImpl implements IUnidadOrganicaService
     private final IUnidadOrganicaRepo repo;
     private final IInventarioService inventarioService;
     private final IBienService bienService;
+
+    private static final Logger log = LoggerFactory.getLogger(UnidadOrganicaServiceImpl.class);
+
+    public String getNameUnidad(Integer id) throws Exception {
+        return  repo.findById(id).get().getNombreUnidad();
+    }
 
     @Transactional
     @Override
@@ -45,8 +55,9 @@ public class UnidadOrganicaServiceImpl implements IUnidadOrganicaService
     }
 
     @Override
-    public Page<UnidadOrganica> readAll(Pageable pageable) throws Exception {
-        return repo.findAll(pageable);
+    public Page<UnidadOrganica> readAll(String filter, Pageable pageable) throws Exception{
+        Specification<UnidadOrganica> spec = UnidadOrganicaEspecification.withDynamicQuery(filter);
+        return repo.findAll(spec, pageable);
     }
 
     @Override

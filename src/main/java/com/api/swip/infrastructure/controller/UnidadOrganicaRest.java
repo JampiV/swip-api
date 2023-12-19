@@ -41,11 +41,19 @@ public class UnidadOrganicaRest
     }
 
     @GetMapping()
-    public ResponseEntity<Page<UnidadOrganica>> findAll(Pageable pageable) throws Exception {
-        Page<UnidadOrganica> obj = service.readAll(pageable);
-
+    public ResponseEntity<Page<UnidadOrganica>> findAll(
+            @RequestParam(required = false) String filter,
+            Pageable pageable
+    ) throws Exception {
+        Page<UnidadOrganica> obj = service.readAll(filter, pageable);
         return new ResponseEntity<>(obj, HttpStatus.OK);
     }
+
+     @GetMapping("/name/{id}")
+     public ResponseEntity<String> getNameUnidad(@PathVariable("id") Integer id) throws Exception{
+        String nombreUnidad = service.getNameUnidad(id);
+        return new ResponseEntity<>(nombreUnidad, HttpStatus.OK);
+     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteById(@PathVariable("id") Integer id) throws Exception {

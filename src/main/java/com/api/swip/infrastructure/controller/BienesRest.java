@@ -1,6 +1,7 @@
 package com.api.swip.infrastructure.controller;
 
 import com.api.swip.dto.BienCentralDto;
+import com.api.swip.dto.BienCentralSelecDto;
 import com.api.swip.dto.BienDto;
 import com.api.swip.entity.Bien;
 import com.api.swip.service.IBienService;
@@ -76,22 +77,34 @@ public class BienesRest
         return new ResponseEntity<>(bienesConUnidad, HttpStatus.OK);
     }
 
+    /*Obteber bienes sin doc_baja*/
+    @GetMapping("/unidad/{id}")
+    public ResponseEntity<Page<BienCentralSelecDto>> findCentralBienByUnidad(@PathVariable("id") Integer id, Pageable pageable) throws Exception {
 
-    /*@GetMapping
-    public ResponseEntity<Page<BienDto>> findAll(Pageable pageable) throws Exception{
-        Page<Bien> bienes = service.readAll(pageable);
-        Page<BienDto> bienDtoList = bienes.map(bien -> {
-            BienDto bienDto = new BienDto();
-            bienDto.setId(bien.getId());
-            bienDto.setEstado(bien.getEstado());
-            bienDto.setMarca(bien.getMarca());
-            bienDto.setModelo(bien.getModelo());
-            bienDto.setSerie(bien.getSerie());
-            bienDto.setNombreDescriptivo(bien.getNombreDescriptivo());
-            return bienDto;
+        // Obtener la página de Bienes usando el método del repositorio
+        Page<Bien> pageBienes = service.findByInventarioId(id, pageable);
+
+        // Convertir cada Bien a BienDto
+        Page<BienCentralSelecDto> bienCentralSelDtoPage = pageBienes.map(bien -> {
+            BienCentralSelecDto bienCentralSelDto = new BienCentralSelecDto();
+            bienCentralSelDto.setId(bien.getId());
+            bienCentralSelDto.setEstado(bien.getEstado());
+            bienCentralSelDto.setMarca(bien.getMarca());
+            bienCentralSelDto.setModelo(bien.getModelo());
+            bienCentralSelDto.setSerie(bien.getSerie());
+            bienCentralSelDto.setNombreDescriptivo(bien.getNombreDescriptivo());
+            bienCentralSelDto.setDocumentoAlta(bien.getDocumentoAlta());
+            bienCentralSelDto.setFecActualizacion(bien.getFecActualizacion());
+            bienCentralSelDto.setFecIngreso(bien.getFecIngreso());
+            bienCentralSelDto.setSitBinv(bien.getSitBinv());
+            bienCentralSelDto.setValorAdquisicion(bien.getValorAdquisicion());
+            bienCentralSelDto.setValorActual(bien.getValorActual());
+            bienCentralSelDto.setValorActualDos(bien.getValorActualDos());
+            return bienCentralSelDto;
         });
-        return new ResponseEntity<>(bienDtoList, HttpStatus.OK);
-    }*/
+
+        return new ResponseEntity<>(bienCentralSelDtoPage, HttpStatus.OK);
+    }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Bien> deleteById(@PathVariable("id") Integer id) throws Exception

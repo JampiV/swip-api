@@ -14,11 +14,13 @@ public interface IUnidadOrganicaService
 
     UnidadOrganica readById(Integer id) throws Exception;
 
-    Page<UnidadOrganica> readAll(Pageable pageable) throws Exception;
+    //Page<UnidadOrganica> readAll(Pageable pageable) throws Exception;
 
     void delete(Integer id) throws Exception;
 
     void deleteByIdWithoutBienes(Integer id) throws Exception;
 
-    /*Integer findIdOrganicaByIdUser(Integer id) throws Exception;*/
+    public String getNameUnidad(Integer id) throws Exception;
+
+    public Page<UnidadOrganica> readAll(String filter, Pageable pageable) throws Exception;
 }
