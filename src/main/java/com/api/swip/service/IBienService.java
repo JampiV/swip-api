@@ -15,5 +15,6 @@ public interface IBienService
     Page<Bien> readAll(Pageable pageable) throws Exception;
     void delete(Integer id) throws Exception;
     Page<Bien> findByInventarioId(Integer id, Pageable pageable);
+    Page<Bien> findByInventarioId(Integer id, Pageable pageable, String filter);
     Page<BienCentralDto> findAllBienesWithUnidad(Pageable pageable);
 }

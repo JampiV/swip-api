@@ -79,10 +79,13 @@ public class BienesRest
 
     /*Obteber bienes sin doc_baja*/
     @GetMapping("/unidad/{id}")
-    public ResponseEntity<Page<BienCentralSelecDto>> findCentralBienByUnidad(@PathVariable("id") Integer id, Pageable pageable) throws Exception {
+    public ResponseEntity<Page<BienCentralSelecDto>> findCentralBienByUnidad(
+            @PathVariable("id") Integer id,
+            Pageable pageable,
+            @RequestParam(required = false) String filter) throws Exception {
 
         // Obtener la página de Bienes usando el método del repositorio
-        Page<Bien> pageBienes = service.findByInventarioId(id, pageable);
+        Page<Bien> pageBienes = service.findByInventarioId(id, pageable, filter);
 
         // Convertir cada Bien a BienDto
         Page<BienCentralSelecDto> bienCentralSelDtoPage = pageBienes.map(bien -> {

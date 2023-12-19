@@ -4,6 +4,7 @@ package com.api.swip.service.impl;
 import com.api.swip.dao.IBienRepo;
 import com.api.swip.dao.IUserLocalRepo;
 import com.api.swip.dto.BienCentralDto;
+import com.api.swip.dto.especification.BienEspecification;
 import com.api.swip.entity.Bien;
 import com.api.swip.entity.UnidadOrganica;
 import com.api.swip.entity.UserLocal;
@@ -13,6 +14,7 @@ import com.api.swip.validators.BienValidator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -57,9 +59,21 @@ public class BienServiceImpl implements IBienService
         repo.deleteById(id);
     }
 
+    // Método original sin cambios
     @Override
     public Page<Bien> findByInventarioId(Integer id, Pageable pageable) {
         return repo.findByInventarioId(id, pageable);
+    }
+
+    // Método sobrecargado con filtro
+    @Override
+    public Page<Bien> findByInventarioId(Integer id, Pageable pageable, String filter) {
+        if (filter == null || filter.isEmpty()) {
+            return repo.findByInventarioId(id, pageable);
+        } else {
+            Specification<Bien> spec = BienEspecification.withFilterAndInventarioId(filter, id);
+            return repo.findAll(spec, pageable);
+        }
     }
 
     @Override
