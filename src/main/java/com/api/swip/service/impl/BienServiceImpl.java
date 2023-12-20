@@ -77,8 +77,18 @@ public class BienServiceImpl implements IBienService
     }
 
     @Override
+    public Page<BienCentralDto> findAllBienesWithUnidad(String filter, Pageable pageable) {
+        if (filter == null || filter.isEmpty()) {
+            throw new  ModelNotFoundException("BÚSQUEDA VACÍA");
+        } else
+        {
+            return repo.findBienByInventarioU(filter, pageable);
+        }
+    }
+
+    @Override
     public Page<BienCentralDto> findAllBienesWithUnidad(Pageable pageable) {
-        return repo.findAllBienesWithUnidad(pageable);
+        return repo.findBienByInventarioU(pageable);
     }
 
 }

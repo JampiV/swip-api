@@ -1,6 +1,10 @@
 package com.api.swip.dto.especification;
 
 import com.api.swip.entity.Bien;
+import com.api.swip.entity.Inventario;
+import com.api.swip.entity.UnidadOrganica;
+import jakarta.persistence.criteria.Join;
+import jakarta.persistence.criteria.JoinType;
 import jakarta.persistence.criteria.Predicate;
 import org.springframework.data.jpa.domain.Specification;
 
@@ -27,11 +31,13 @@ public class BienEspecification {
                 Predicate sitBinv = cb.like(cb.lower(root.get("sitBinv")), "%" + filterLower + "%");
                 Predicate estado = cb.like(cb.lower(root.get("estado")), "%" + filterLower + "%");
 
-                Predicate combinedPredicate = cb.or(nombreDescriptivo, marca, modelo, serie, fecIngreso, fecActualizacion, documentoAlta, sitBinv, estado); // otros predicados
+                Predicate combinedPredicate = cb.or(nombreDescriptivo, marca, modelo, serie, fecIngreso, fecActualizacion,
+                        documentoAlta, sitBinv, estado); // otros predicados
                 predicates.add(combinedPredicate);
             }
 
             return cb.and(predicates.toArray(new Predicate[0]));
         };
     }
+
 }

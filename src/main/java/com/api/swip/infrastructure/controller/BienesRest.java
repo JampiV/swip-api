@@ -72,8 +72,13 @@ public class BienesRest
     }
 
     @GetMapping()
-    public ResponseEntity<Page<BienCentralDto>> findAllWithUnidad(Pageable pageable) throws Exception {
-        Page<BienCentralDto> bienesConUnidad = service.findAllBienesWithUnidad(pageable);
+    public ResponseEntity<Page<?>> findAllWithUnidad(Pageable pageable, @RequestParam(required = false , name = "filter") String filter) throws Exception {
+        Page<?> bienesConUnidad;
+        if(filter !=null){
+            bienesConUnidad = service.findAllBienesWithUnidad(filter, pageable);
+        }else{
+            bienesConUnidad = service.findAllBienesWithUnidad(pageable);
+        }
         return new ResponseEntity<>(bienesConUnidad, HttpStatus.OK);
     }
 

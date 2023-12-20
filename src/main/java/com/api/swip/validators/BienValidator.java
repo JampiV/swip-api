@@ -13,7 +13,7 @@ public class BienValidator
             throw new ModelNotFoundException("El bien es nulo");
         }
 
-        if (bien.getDocumentoAlta() == null || bien.getDocumentoAlta().isEmpty())
+        /*if (bien.getDocumentoAlta() == null || bien.getDocumentoAlta().isEmpty())
         {
             throw new ResourceValidationException("El Documento de Alta del bien es nulo");
         }
@@ -21,7 +21,7 @@ public class BienValidator
         if (bien.getDocumentoBaja() == null || bien.getDocumentoBaja().isEmpty())
         {
             throw new ResourceValidationException("El Documento de baja del bien es nulo");
-        }
+        } */
 
         if(bien.getMarca() == null || bien.getMarca().isEmpty())
         {
@@ -70,7 +70,7 @@ public class BienValidator
 
         if (bien.getEstado() == null || bien.getEstado().isEmpty())
         {
-            throw new ResourceValidationException("El nombre del bien es nulo");
+            throw new ResourceValidationException("El estado del bien es nulo");
         }
     }
 }
