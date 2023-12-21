@@ -19,6 +19,7 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Service
@@ -38,6 +39,7 @@ public class UnidadOrganicaServiceImpl implements IUnidadOrganicaService
     @Transactional
     @Override
     public UnidadOrganica save(UnidadOrganica unidadOrganica) throws Exception {
+        unidadOrganica.getInventario().setFechaActualizacion(LocalDate.now());
         UnidadOrganicaValidator.validate(unidadOrganica);
         return repo.save(unidadOrganica);
     }

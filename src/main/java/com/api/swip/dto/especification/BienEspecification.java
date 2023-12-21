@@ -1,10 +1,6 @@
 package com.api.swip.dto.especification;
 
 import com.api.swip.entity.Bien;
-import com.api.swip.entity.Inventario;
-import com.api.swip.entity.UnidadOrganica;
-import jakarta.persistence.criteria.Join;
-import jakarta.persistence.criteria.JoinType;
 import jakarta.persistence.criteria.Predicate;
 import org.springframework.data.jpa.domain.Specification;
 

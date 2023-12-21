@@ -5,6 +5,7 @@ import com.api.swip.entity.UserInventariador;
 import com.api.swip.exception.ModelNotFoundException;
 import com.api.swip.service.IUserInventariadorService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -14,10 +15,11 @@ import java.util.List;
 public class UserInventariadorServiceImpl implements IUserInventariadorService
 {
     private final IUserInventariadorRepo repo;
-
+    private final PasswordEncoder encoder;
 
     @Override
     public UserInventariador save(UserInventariador userInventariador) throws Exception {
+        userInventariador.setContrasenia(encoder.encode(userInventariador.getContrasenia()));
         return repo.save(userInventariador);
     }
 

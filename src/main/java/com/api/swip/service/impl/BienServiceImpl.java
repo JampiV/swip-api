@@ -14,10 +14,13 @@ import com.api.swip.validators.BienValidator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -39,6 +42,8 @@ public class BienServiceImpl implements IBienService
     public Bien update(Bien bienes, Integer id) throws Exception {
         BienValidator.validate(bienes);
         repo.findById(id).orElseThrow(() -> new ModelNotFoundException("ID NO ENCONTRADO: " + id));
+
+        bienes.setFecActualizacion(LocalDateTime.now().toString());
         return repo.save(bienes);
     }
 

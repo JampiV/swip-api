@@ -53,4 +53,15 @@ public class ITokenServiceImpl implements ITokenService {
         return tokenRepo.save(token);
     }
 
+    @Override
+    public Token findByUserId(Integer userId) {
+        return tokenRepo.findByUserId(userId);
+    }
+
+    @Override
+    public void delete(Integer id) throws Exception {
+        tokenRepo.findById(id).orElseThrow(() -> new Exception("ID NOT FOUND: " + id));
+        tokenRepo.deleteById(id);
+    }
+
 }

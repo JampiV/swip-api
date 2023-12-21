@@ -16,6 +16,6 @@ import lombok.NoArgsConstructor;
 public class UserInventariador extends User
 {
    @OneToOne()
-   @JoinColumn(name = "id_unidad_inventario", nullable = false, foreignKey = @jakarta.persistence.ForeignKey(name = "FK_user_inventariador_unidad_inventario"))
+   @JoinColumn(name = "id_unidad_inventario", foreignKey = @jakarta.persistence.ForeignKey(name = "FK_user_inventariador_unidad_inventario"))
    private UnidadInventario unidadInventario;
 }

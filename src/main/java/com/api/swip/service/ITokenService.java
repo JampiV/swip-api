@@ -10,4 +10,6 @@ public interface ITokenService {
     Token createNewToken(User user, String tokenString, Date expiryDate);
     boolean isTokenActive(String token, User user);
     Token createOrUpdateToken(User user, String tokenString, Date expiryDate);
+    Token findByUserId(Integer userId);
+    void delete(Integer id) throws Exception;
 }

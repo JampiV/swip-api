@@ -1,12 +1,17 @@
 package com.api.swip.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.time.LocalDate;
 import java.util.List;
 
 @Entity
+@Setter
+@Getter
 public class Inventario
 {
     @Id
@@ -14,7 +19,7 @@ public class Inventario
     private Integer id;
     private LocalDate fechaActualizacion;
 
-    @JsonManagedReference()
+    @JsonBackReference()
     @OneToMany( mappedBy = "inventario", cascade = {CascadeType.ALL})
     private List<Bien> bienes;
 
@@ -30,6 +35,7 @@ public class Inventario
         this.bienes = bienes;
     }
 
+    /*
     public int getId() {
         return id;
     }
@@ -52,5 +58,5 @@ public class Inventario
 
     public void setBienes(List<Bien> bienes) {
         this.bienes = bienes;
-    }
+    }*/
 }

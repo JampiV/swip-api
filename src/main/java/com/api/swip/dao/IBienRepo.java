@@ -21,8 +21,8 @@ public interface IBienRepo extends JpaRepository<Bien, Integer>
     @Query("SELECT new com.api.swip.dto.BienCentralDto(b, u.nombreUnidad) " +
             "FROM Bien b " +
             "LEFT JOIN b.inventario i " +
-            "LEFT JOIN UnidadOrganica u ON u.inventario.id = i.id " + // Agrega un espacio aquí
-            "WHERE b.nombreDescriptivo LIKE %:nombreDescriptivo%")
+            "LEFT JOIN UnidadOrganica u ON u.inventario.id = i.id " +
+            "WHERE LOWER(b.nombreDescriptivo) LIKE LOWER(CONCAT('%', :nombreDescriptivo, '%'))")
     Page<BienCentralDto> findBienByInventarioU(@Param("nombreDescriptivo") String spec, Pageable pageable);
 
     @Query("SELECT new com.api.swip.dto.BienCentralDto(b, u.nombreUnidad) " +

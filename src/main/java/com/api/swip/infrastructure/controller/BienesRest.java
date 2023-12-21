@@ -10,6 +10,8 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
@@ -49,7 +51,9 @@ public class BienesRest
     }
 
     @GetMapping("/unidad")
-    public ResponseEntity<Page<BienDto>> findAllByUnidad(Pageable pageable) throws Exception {
+    public ResponseEntity<Page<BienDto>> findAllByUnidad(
+            @PageableDefault(sort = "id", direction = Sort.Direction.ASC)
+            Pageable pageable) throws Exception {
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
         Integer inventarioId = userLocalService.obtenerInventarioId(username);
 
@@ -72,7 +76,9 @@ public class BienesRest
     }
 
     @GetMapping()
-    public ResponseEntity<Page<?>> findAllWithUnidad(Pageable pageable, @RequestParam(required = false , name = "filter") String filter) throws Exception {
+    public ResponseEntity<Page<?>> findAllWithUnidad(
+            @PageableDefault(sort = "id", direction = Sort.Direction.ASC)
+            Pageable pageable, @RequestParam(required = false , name = "filter") String filter) throws Exception {
         Page<?> bienesConUnidad;
         if(filter !=null){
             bienesConUnidad = service.findAllBienesWithUnidad(filter, pageable);
@@ -80,12 +86,13 @@ public class BienesRest
             bienesConUnidad = service.findAllBienesWithUnidad(pageable);
         }
         return new ResponseEntity<>(bienesConUnidad, HttpStatus.OK);
-    }
+}
 
     /*Obteber bienes sin doc_baja*/
     @GetMapping("/unidad/{id}")
     public ResponseEntity<Page<BienCentralSelecDto>> findCentralBienByUnidad(
             @PathVariable("id") Integer id,
+            @PageableDefault(sort = "id", direction = Sort.Direction.ASC)
             Pageable pageable,
             @RequestParam(required = false) String filter) throws Exception {
 

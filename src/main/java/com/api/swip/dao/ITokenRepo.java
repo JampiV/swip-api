@@ -11,4 +11,6 @@ public interface ITokenRepo extends JpaRepository<Token, Integer> {
     List<Token> findByUserIdAndIsActive(Integer userId, Boolean isActive);
 
     Optional<Token> findByUser(User user);
+
+    Token findByUserId(Integer userId);
 }
