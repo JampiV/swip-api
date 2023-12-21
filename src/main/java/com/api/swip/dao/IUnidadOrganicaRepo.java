@@ -8,7 +8,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface IUnidadOrganicaRepo extends JpaRepository<UnidadOrganica, Integer>
 {
-    // En tu interfaz de repositorio, puedes usar Specifications
     Page<UnidadOrganica> findAll(Specification<UnidadOrganica> spec, Pageable pageable);
-
+    UnidadOrganica findUnidadOrganicaByInventario_Id(Integer id);
+    UnidadOrganica findUnidadOrganicaByNombreUnidad(String name);
 }

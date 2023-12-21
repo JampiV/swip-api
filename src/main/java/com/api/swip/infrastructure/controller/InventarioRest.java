@@ -2,6 +2,7 @@ package com.api.swip.infrastructure.controller;
 
 import com.api.swip.entity.Inventario;
 import com.api.swip.service.IInventarioService;
+import com.api.swip.service.IUnidadOrganicaService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -17,6 +18,7 @@ import java.util.List;
 public class InventarioRest
 {
     private final IInventarioService service;
+    private final IUnidadOrganicaService uniService;
 
     @PostMapping()
     public ResponseEntity<Inventario> register(@Valid @RequestBody Inventario inventario) throws Exception
@@ -34,6 +36,11 @@ public class InventarioRest
     public ResponseEntity<Inventario> findById(@PathVariable("id") Integer id) throws Exception
     {
         return new ResponseEntity<>(service.readById(id), HttpStatus.OK);
+    }
+
+    @GetMapping("/unidad")
+    public ResponseEntity<Inventario> findByNombreUnidad(@RequestParam(required = true , name = "name") String name) throws Exception{
+        return new ResponseEntity<>(uniService.getInventarioDeUnidadOrganicaForName(name), HttpStatus.OK);
     }
 
     @GetMapping()

@@ -55,13 +55,18 @@ public class UnidadOrganicaRest
         return new ResponseEntity<>(nombreUnidad, HttpStatus.OK);
      }
 
+     @GetMapping("name/inventario/{id}")
+     public ResponseEntity<String> getNameForIdInventario(@PathVariable("id") Integer id) throws Exception{
+        String nombreUnidad = service.getNameForIdInventario(id);
+        return new ResponseEntity<>(nombreUnidad, HttpStatus.OK);
+     }
+
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteById(@PathVariable("id") Integer id) throws Exception {
         service.delete(id);
 
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
-
 
     @DeleteMapping("/without-bienes/{id}")
     public ResponseEntity<Void> deleteByIdWithoutBienes(@PathVariable("id") Integer id) throws Exception

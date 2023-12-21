@@ -1,5 +1,6 @@
 package com.api.swip.service;
 
+import com.api.swip.entity.Inventario;
 import com.api.swip.entity.UnidadOrganica;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -23,4 +24,8 @@ public interface IUnidadOrganicaService
     public String getNameUnidad(Integer id) throws Exception;
 
     public Page<UnidadOrganica> readAll(String filter, Pageable pageable) throws Exception;
+
+    String getNameForIdInventario(Integer id)throws Exception;
+
+    Inventario getInventarioDeUnidadOrganicaForName(String name) throws Exception;
 }

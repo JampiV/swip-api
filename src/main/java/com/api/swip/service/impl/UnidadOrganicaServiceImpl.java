@@ -21,6 +21,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -60,6 +61,18 @@ public class UnidadOrganicaServiceImpl implements IUnidadOrganicaService
     public Page<UnidadOrganica> readAll(String filter, Pageable pageable) throws Exception{
         Specification<UnidadOrganica> spec = UnidadOrganicaEspecification.withDynamicQuery(filter);
         return repo.findAll(spec, pageable);
+    }
+
+    @Override
+    public String getNameForIdInventario(Integer id) throws Exception {
+        UnidadOrganica uniOr = repo.findUnidadOrganicaByInventario_Id(id);
+        return uniOr.getNombreUnidad();
+    }
+
+    @Override
+    public Inventario getInventarioDeUnidadOrganicaForName(String name) throws Exception {
+        UnidadOrganica uniOr = repo.findUnidadOrganicaByNombreUnidad(name);
+        return uniOr.getInventario();
     }
 
     @Override
