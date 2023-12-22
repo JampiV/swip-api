@@ -31,8 +31,4 @@ public class User
     @JoinColumn(name = "role_id", nullable = false, foreignKey = @ForeignKey(name = "FK_role_user"))
     private Role role;
 
-/*  @JsonBackReference()
-    @ManyToOne()
-    @JoinColumn(name="unidad", foreignKey = @ForeignKey(name = "FK_unidad_user"))
-    private UnidadOrganica unidad;*/
 }

@@ -2,8 +2,10 @@ package com.api.swip.service.impl;
 
 import com.api.swip.dao.IUserLocalRepo;
 import com.api.swip.dao.IUserRepo;
+import com.api.swip.entity.Token;
 import com.api.swip.entity.UserLocal;
 import com.api.swip.exception.ModelNotFoundException;
+import com.api.swip.service.ITokenService;
 import com.api.swip.service.IUserLocalService;
 import com.api.swip.service.IUserService;
 import lombok.RequiredArgsConstructor;
@@ -21,6 +23,7 @@ public class UserLocalServiceImpl implements IUserLocalService
     private final IUserLocalRepo repo;
     private final IUserRepo userRepo;
     private final IUserService userService;
+    private final ITokenService tokenService;
 
     @Autowired
     private BCryptPasswordEncoder passwordEncoder;
@@ -50,7 +53,12 @@ public class UserLocalServiceImpl implements IUserLocalService
 
     @Override
     public void delete(Integer id) throws Exception {
-        repo.findById(id).orElseThrow(() -> new ModelNotFoundException("ID NOT FOUND: " + id));
+        Token token = tokenService.findByUserId(id);
+
+        if(token != null) {
+            tokenService.delete(token.getId());
+        }
+
         repo.deleteById(id);
     }
 
