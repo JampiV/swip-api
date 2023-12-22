@@ -1,11 +1,10 @@
 package com.api.swip.service;
 
-import com.api.swip.dto.BienCentralDto;
 import com.api.swip.entity.Bien;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
-import java.util.List;
+import java.util.Optional;
 
 public interface IBienService
 {
@@ -18,5 +17,6 @@ public interface IBienService
     Page<Bien> findByInventarioId(Integer id, Pageable pageable, String filter);
     public Page<?> findAllBienesWithUnidad(String filter, Pageable pageable);
     public Page<?> findAllBienesWithUnidad(Pageable pageable);
+    Bien updateEstadoBien(String estado, Integer id) throws Exception;
 
 }

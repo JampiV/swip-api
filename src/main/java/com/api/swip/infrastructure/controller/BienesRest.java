@@ -43,6 +43,13 @@ public class BienesRest
         return new ResponseEntity<>(bien, HttpStatus.OK);
     }
 
+    @PutMapping("/update")
+    public ResponseEntity<Bien> updateEstado(@Valid @RequestParam(name = "estado") String estado, @RequestParam(name = "id") Integer id) throws Exception
+    {
+        Bien bien = service.updateEstadoBien(estado, id);
+        return new ResponseEntity<>(bien, HttpStatus.OK);
+    }
+
     @GetMapping("/{id}")
     public ResponseEntity<Bien> findById(@PathVariable("id") Integer id) throws Exception
     {

@@ -6,22 +6,18 @@ import com.api.swip.dao.IUserLocalRepo;
 import com.api.swip.dto.BienCentralDto;
 import com.api.swip.dto.especification.BienEspecification;
 import com.api.swip.entity.Bien;
-import com.api.swip.entity.UnidadOrganica;
-import com.api.swip.entity.UserLocal;
 import com.api.swip.exception.ModelNotFoundException;
 import com.api.swip.service.IBienService;
 import com.api.swip.validators.BienValidator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
-import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
-import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -94,6 +90,14 @@ public class BienServiceImpl implements IBienService
     @Override
     public Page<BienCentralDto> findAllBienesWithUnidad(Pageable pageable) {
         return repo.findBienByInventarioU(pageable);
+    }
+
+    @Override
+    public Bien updateEstadoBien(String estado, Integer id) throws Exception {
+        Optional<Bien> bienOptional = repo.findById(id);
+        Bien bien = bienOptional.get(); // Extract the Bien object
+        bien.setEstado(estado);
+        return repo.save(bien); // Now passing a Bien object
     }
 
 }
